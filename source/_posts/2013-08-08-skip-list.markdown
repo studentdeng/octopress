@@ -1,0 +1,60 @@
+---
+layout: post
+title: "跳跃表 skip list"
+date: 2013-08-08 09:51
+comments: true
+categories: [algorithms]
+---
+
+最近在学习[redis](http://redis.cn)，这时才知道了[skip list](http://en.wikipedia.org/wiki/Skip_list)，结合[Mit 算法导论 lecture 12](http://v.163.com/movie/2010/12/7/S/M6UTT5U0I_M6V2TTJ7S.html)，在奋斗了2个早上的时间后有了下面的东东。
+
+对于我们熟悉的binary search来说，我们需要能够做到random access才行。但是在普通的link这种数据结构中却不能做到。而这种情况下我们有很多类似的工具比如heap，tree，b tree，red－black tree。等等类似的都是来自AVL的变种。但是说实话，这些东东，的确是挺难实现的，需要做各种的旋转啊，调整啊，来保持平衡。特别是red－black tree。而这时的skip list 就为我们提供了一个很好的思路。
+
+#introduction
+
+让我们先从简单的开始
+
+![image](http://studentdeng.github.io/images/skip_list1.png)
+
+如果最下面的数字是已经排序好的数列，我们想要快速查找其中一项，而不是简单的便利。我们可以增加一个link，也就是上面的一条，来让我们能够“跳过”一些元素，也就是减少一些不必要的比较。
+
+那么在2条时，我们的访问程度是多少呢？L2 + L1 / L2, 也就是第二条link的个数+ 每一个小端个数，这个是最差情况。显然，让这个不等式和最小，需要 L2 = L1 / L2。 显然L1是一个定值。这里设为N,那么，2条link下，我们的查找复杂度是 2 * √n
+
+如何再优化呢？这个思路很简单，就是在L2上面再构建一个link L3. 整个时间也就是 L3 ＋ L2 ／ L3 ＋ L1 ／ L2 ，根据不等式性质，他们的和最小时，也就是 L3 ＝ L2 ／ L3 ＝ L1 ／ L2。当L1 ＝ N时，他们的和时 3 * 立方根（N）
+
+![image](http://studentdeng.github.io/images/skip_list_l3.png)
+
+当第k层时， 我们的时间则是 k * k次方跟（N）
+
+当k = lgN 时，我们的时间为 lgN * lg 次方跟（N），根据对数的换底公式，我们可以得出 时间是 2lgN. 哈，我们现在已经降到O(lgN).我们满足了。
+
+这时我们可以想象一下，这个skip list的结构，其实就是一个binary tree。我们通过最上面的一层访问类似跟节点的情况，然后一层层link 相当于tree的孩子节点，整个比较过程和binary search 非常的相似。
+
+#insert
+对于这些结构来说，搞定search不是难点，插入和删除则是最麻烦的东西。这里我们可以自己思考一下，为了保证我们的link的结构足够完美，可能需要记录没一段的个数，然后我们可能有一些节点要上几层或是下几层。但是这个其实，本质上和那些avl树又一样了。skip list则是基于一种随机的策略来决定这些节点。其实我们可以思考一下，最完美的分法就是和binary tree一样的，所以这种2倍数的关系就可以用抛硬币的方式来决定。
+
+这里为了程序时间方便，我们创建一个无穷小的节点作为我们的其实节点，这样，我们所有的开始都是从最左边。
+
+![image](http://studentdeng.github.io/images/skip_list_01.png)
+
+我们插入一个元素30，这时我们可以判断一下这个新的元素是否需要“升级”，这里我扔了一下，反面，不用升级了。
+
+![image](http://studentdeng.github.io/images/skip_list_02.png)
+
+这里我们插入一个15，我扔了一下，反面。不用升级
+
+![image](http://studentdeng.github.io/images/skip_list_03.png)
+
+这里我们插入一个20，我扔了一个正面，又扔了一个正面，额，好吧第三次终于是反面了。
+
+![image](http://studentdeng.github.io/images/skip_list_04.png)
+
+这里涉及到了一点点的随机算法的证明，这些东西实在是让人烦躁。主要还是大学时候的概率学得就不咋地，现在也都忘了。从最直观的来看，就是一层层升级的概率会越来越低，在随机算法足够独立和大量的数目上来看，不难形成这样子的一个类似tree的结构。
+
+#delete
+删除这里的操作简直就是blazing simple,因为我们整个list layer 都是建立在随机上的，删除则是直接删除就好了
+
+我在看到这里，基本已经受不了要吐槽了。实现这个也太简单了，相对red-black tree这种东西。
+
+
+
