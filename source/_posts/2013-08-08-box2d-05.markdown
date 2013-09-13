@@ -1,0 +1,64 @@
+---
+layout: post
+title: "box2d 05 RevoluteJoint and b2WeldJoint"
+date: 2013-08-08 15:11
+comments: true
+categories: [box2D, game]
+---
+
+资料代码，思路来自 [raywenderlich](http://www.raywenderlich.com/4756/how-to-make-a-catapult-shooting-game-with-cocos2d-and-box2d-part-1)。这个只是自己学习时的笔记，非原创。
+
+#b2RevoluteJoint 
+
+* 将刚体固定在一个点上，刚体可以围绕这个点旋转
+* 可以提供马达，提供刚体旋转的动力
+
+所以，通过b2RevoluteJoint的第一个特性，我们可以很方便的模拟跷跷板。而第二个特性，我们可以很方便的实现汽车运动，或是弹弓类似的东西，今天实现一个类似疯狂小鸟的demo
+
+创建b2RevoluteJoint很简单，但是里面有一些属性还是让人比较纠结，特别是好多中文blog，不知道是笔误还是无心，都是错的 =, =!
+
+	b2RevoluteJointDef armJointDef;
+    armJointDef.Initialize(groundBody, armBody, b2Vec2(233.0 / PTM_RATIO, FLOOR_HEIGHT / PTM_RATIO));
+    
+    armJointDef.enableLimit = true;
+    armJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(9);
+    armJointDef.upperAngle = CC_DEGREES_TO_RADIANS(75);
+    
+    armJointDef.enableMotor = true;
+    armJointDef.maxMotorTorque = 200;
+    armJointDef.motorSpeed = - 10;
+    
+    armJoint = (b2RevoluteJoint *)world->CreateJoint(&armJointDef);
+
+这3个很好理解，就是对我们的旋转做限制。单位是弧度。
+
+* enableLimit
+* lowerAngle
+* upperAngle 
+
+这3个稍微不好理解
+
+* enableMotor：     表示是否开启我们的旋转马达
+* motorSpeed：      表示我们希望马达给我们提供的速度是多少，小于0表示顺时针
+* maxMotorTorque：  表示马达给我们提供的扭矩有多少。
+
+简单的说，就是maxMotorTorque为我们提供改变速度的力。motorSpeed表示我们希望达到的最大速度是多少。
+
+
+#b2WeldJoint
+
+b2WeldJoint又是一个很好理解的连接器。b2WeldJoint通过一个点把2个刚体绑定在一起运动。
+
+	b2WeldJointDef weldJointDef;
+	weldJointDef.Initialize(bulletBody, armBody, b2Vec2(230.0f/PTM_RATIO,(155.0f+FLOOR_HEIGHT)/PTM_RATIO));
+	weldJointDef.collideConnected = false;
+        
+	bulletJoint = (b2WeldJoint*)world->CreateJoint(&weldJointDef);
+	
+在弹弓实例下，我们可以将炮弹绑定在我们的发射架上，当发射架运动到一定角度时，我们可以释放这个连接器，炮弹就可以射出了。
+
+[source code](https://github.com/studentdeng/box2d-tutorials/tree/master/05)
+
+<div class="video-container">
+	<iframe height=498 width=510 src="http://player.youku.com/embed/XNTkzMzI0ODAw" frameborder=0 allowfullscreen></iframe>
+</div>
