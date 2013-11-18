@@ -26,18 +26,22 @@ index.html 就是我们希望能够部署到服务器的代码
 
 然后在**服务器**创建一个repository, 这里可不是服务器部署代码的位置
 
-	$ mkdir test && cd test
+	$ mkdir test.git && cd test.git
 	$ git init --bare
 	$ cat > hooks/post-receive
 	#!/bin/sh
 	GIT_WORK_TREE=/mnt/www/test git checkout -f
 	$ chmod +x hooks/post-receive
 
+这是服务器的git代码目录 
+
+	/repo/test.git
+	
 这里的 '/mnt/www/test' 就是我们将要部署服务器代码的位置，一般的lamp，我们喜欢放在www里，当然这里需要根据不同的环境更换就好了。
 
 这里我们在**本地**的git目录下增加一个remote
 
-	$ git remote add prod ssh://server_address/mnt/www/test
+	$ git remote add prod ssh://server_address/repo/test.git
 	$ git push prod +master:refs/heads/master
 
 server_address 可以ip，域名。
