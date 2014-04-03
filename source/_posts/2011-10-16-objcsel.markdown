@@ -3,7 +3,7 @@ layout: post
 title: "Objective C SEL"
 date: 2011-10-16 23:37
 comments: true
-categories: [Objective-C]
+categories: [Objective-C, iOS]
 ---
 
 上一篇http://www.cnblogs.com/studentdeng/archive/2011/10/06/2199873.html，总结了一点关于Objective C message send 的有意思的东西，中间穿插了一点关于SEL有趣的东西，之前，我们知道Objective-C runtime 在处理selector时，是做一个unique hash set， 那么今天，我们看看这个set 是如何产生的。这篇文章参考了[link](http://www.sealiesoftware.com/blog/archive/2009/09/01/objc_explain_Selector_uniquing_in_the_dyld_shared_cache.html)

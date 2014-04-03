@@ -3,7 +3,7 @@ layout: post
 title: "Objective-C Message"
 date: 2011-10-06 23:35
 comments: true
-categories: [Objective-C]
+categories: [Objective-C, iOS]
 ---
 
 object c 里面有一个非常有趣的设计，如果之前了解过c++的家伙们，对object c 中的把传统的调用函数变成了向这个类发送消息，这个过程总是令人琢磨不透，在实际过程中遇到的crash也很难调试清楚。这篇就要详细的解释消息这个家伙。当然，消息这个涉及的东西实在是太多了。这篇先简单介绍一下。

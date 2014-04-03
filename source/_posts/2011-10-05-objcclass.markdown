@@ -3,7 +3,7 @@ layout: post
 title: "objcclass"
 date: 2011-10-05 23:31
 comments: true
-categories: [Objective-C]
+categories: [Objective-C, iOS]
 ---
 
 之前一直做C++开发，最近2个多月转 Objective-C， 入门的时候，遇到了很多的困惑。现在过节，正是解决他们的好时机。

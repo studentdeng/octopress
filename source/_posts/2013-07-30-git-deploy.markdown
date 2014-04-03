@@ -9,7 +9,7 @@ categories: [tips, git]
 
 实现原理是当我们push 代码到remote repository时，通过git的[post-receive hooks](https://www.kernel.org/pub/software/scm/git/docs/githooks.html)。执行 
 
-	git checkout -f
+	git checkout prod -f
 	
 来帮助我们实现自动部署
 
@@ -30,7 +30,7 @@ index.html 就是我们希望能够部署到服务器的代码
 	$ git init --bare
 	$ cat > hooks/post-receive
 	#!/bin/sh
-	GIT_WORK_TREE=/mnt/www/test git checkout -f
+	GIT_WORK_TREE=/mnt/www/test git checkout prod -f
 	$ chmod +x hooks/post-receive
 
 这是服务器的git代码目录 

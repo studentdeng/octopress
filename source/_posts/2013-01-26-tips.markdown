@@ -3,7 +3,7 @@ layout: post
 title: "tips"
 date: 2013-01-26 18:05
 comments: true
-categories: [IOS, tips, configure]
+categories: [iOS, tips, configure]
 ---
 <ol>
 <li><a href="#A1">ARC 编译时遇到的相关问题</a></li>
@@ -13,6 +13,7 @@ categories: [IOS, tips, configure]
 <li><a href="#A5">写博客命令</a></li>
 <li><a href="#A6">php apigen command demo</a></li>
 <li><a href="#A7">ios6 下因为横屏问题导致UIImagePickerController崩溃</a></li>
+<li><a href="#A8">ios5 下UILabel sizeToFit导致 UILabel不换行 </a></li>
 </ol>
 
 <div name = "A1" id = "A1"></div>
@@ -102,3 +103,15 @@ apple 自己的UIImagePickerController 不支持横屏，所以，在ios6系统�
 	}
 
 	@end
+	
+<div name = "A8" id = "A8"></div>
+
+# ios5 下UILabel sizeToFit导致 UILabel不换行
+
+很奇怪的Bug 在ios5.0下，sizeToFit 之后，UILabel 不换行，但是在ios6， ios7 下面没有任何问题，
+这里应该是apple的bug被修复了。在ios5下，慎用 sizeToFit
+
+在使用sizeToFit的原因是因为需要置顶UILabel，这里有一个比较简单的方式
+stringByAppendingString:@"\n \n \n \n \n \n \n \n"]
+
+通过设置在Label中的字符串，增加额外的空行，来达到置顶的要求
