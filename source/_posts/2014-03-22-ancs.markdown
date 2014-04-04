@@ -22,7 +22,9 @@ categories: [iOS]
 文本档覆盖的内容中除特别描述外，和字节序相关的都是用Little-endian (小端模式)。
 文本档覆盖的内容中除特别描述外，和字符串传递相关的都是UTF-8
 
-*注意：ANCS 并不保证始终存在，服务开启，关闭机制由iOS系统决定，Device 需要一直检测，查找ANCS是否存在。*
+{% notebox %}
+ANCS 并不保证始终存在，服务开启，关闭机制由iOS系统决定，Device 需要一直检测，查找ANCS是否存在。
+{% endnotebox %}
 
 #协议内容
 
