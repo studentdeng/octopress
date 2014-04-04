@@ -50,7 +50,7 @@ Notification Source characteristic 包括3个功能
 
 ###Notification Source response format
 
-![图2-1 Notification Source characteristic 通过GATT Notification 的格式。](http://studentdeng.github.io/images/ancs1.png)
+{% imgcap /images/ancs1.png 图2-1 Notification Source characteristic 通过GATT Notification 的格式。%}  
 
 
 * EventID：描述iOS设备上面的通知是增加、删除、还是修改。

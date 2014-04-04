@@ -16,7 +16,7 @@ $header-subtitle-font-family: $serif !default;
 .mono { font-family: $mono; }
 
 body > header h1 {
-  font-size: 2.2em;
+  font-size: 2.0em;
   @extend .heading;
   font-family: $header-title-font-family;
   font-weight: normal;
@@ -33,13 +33,13 @@ body {
   @extend .serif;
 }
 h1 {
-  font-size: 2.2em;
+  font-size: 2.0em;
   line-height: 1.2em;
 }
 
 @media only screen and (min-width: 992px) {
   body { font-size: 1.15em; }
-  h1 { font-size: 2.2em; line-height: 1.2em; }
+  h1 { font-size: 2.0em; line-height: 1.2em; }
 }
 
 #{headings()}{

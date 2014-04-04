@@ -9,12 +9,7 @@ module Jekyll
     def render(context)
       stressText = paragraphize(super)
 
-      source = "<div class='notebox'>"
-      source += "<p><strong>Note: </strong>"
-      source += stressText
-
-      source += "</p></div>"
-
+      source = "<div class='notebox'><p><strong>Note: </strong>#{stressText}</p></div>"
       source
 
     end
