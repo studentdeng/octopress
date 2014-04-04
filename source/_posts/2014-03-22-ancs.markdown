@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ancs"
+title: "Apple Notification Center Service"
 date: 2014-03-22 15:42
 comments: true
 categories: [iOS]
