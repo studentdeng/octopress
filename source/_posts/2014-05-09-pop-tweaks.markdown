@@ -1,17 +1,21 @@
 ---
 layout: post
-title: "pop & tweaks"
+title: "facebook pop & tweaks demo"
 date: 2014-05-09 19:39
 comments: true
 categories: [iOS]
 ---
 
 最近facebook开源了2个很有价值的project [pop](https://github.com/facebook/pop)和[Tweaks](https://github.com/facebook/Tweaks)。
-facebook提供了一个非常赞的[topic-Building Paper](http://www.youtube.com/playlist?list=PLb0IAmt7-GS2sh8saWW4z8x2vo7puwgnR)。
+facebook提供了一个非常赞的topic-[Building Paper](http://www.youtube.com/playlist?list=PLb0IAmt7-GS2sh8saWW4z8x2vo7puwgnR)。
 
 这篇文章来简单介绍一下[pop](https://github.com/facebook/pop)的使用，最后使用[Tweaks](https://github.com/facebook/Tweaks)来微小调整动画参数来达到我们最希望的效果。
 
 这是我们最后的效果:
+
+<div class="video-container">
+	<iframe height=498 width=510 src="http://player.youku.com/embed/XNzA5ODM1NTQ4" frameborder=0 allowfullscreen></iframe>
+</div>
 
 #pop is powerful
 
