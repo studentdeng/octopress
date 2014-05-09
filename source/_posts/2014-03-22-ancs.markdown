@@ -99,7 +99,7 @@ AttributeIDS：需要检索信息list
 
 
 获取通知属性命令Example
-“00 43 00 00 00 00 01 FF FF 02 05”
+“00 43 00 00 00 00 01 FF FF 05”
 
 ![image](http://studentdeng.github.io/images/ancs7.png)
 
@@ -163,3 +163,7 @@ ANCS 的 session 从设备订阅characteristic 开始到取消订阅或是discon
 * 无效参数（0xA2） : 比如NotificationUID 找不到
 
 *注意：如果产生了上面的错误，都不会再收到任何的GATT 通知。*
+
+#参考内容
+
+[Apple Notification Center Service (ANCS) Specification](https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/AppleNotificationCenterServiceSpecification/Introduction/Introduction.html)
