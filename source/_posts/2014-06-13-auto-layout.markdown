@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "auto_layout"
+title: "AutoLayout"
 date: 2014-06-13 18:28
 comments: true
 categories: [iOS]
@@ -14,7 +14,7 @@ categories: [iOS]
 *  可能的iPhone6屏幕的变化，iPhone和iPad Mac开发越来越趋于统一
 *  Xcode6中Interface Builder的变化（IB中显示自定义View）
 
-cocoa touch 开发中适配各种屏幕尺寸已经是能够预测的了，那么跟进Auto layout 也就是必备技能了，未来面试中应该也是主流问题了。
+cocoa touch 开发中适配各种屏幕尺寸已经是能够预测的了，那么跟进Auto layout 也就是必备技能了。
 
 在一开始使用AutoLayout的时候，和之前的使用Frame描述位置还是有很大的不同，而且一开始的时候很容易遇到一些奇怪的异常。但是在了解AutoLayout之后，就会发现这是一个非常非常elegant的布局解决方案。
 
@@ -24,26 +24,27 @@ cocoa touch 开发中适配各种屏幕尺寸已经是能够预测的了，那�
 
 这里的坐标和笛卡尔坐标系不同的是Y的方向
 
-![1-1 The default layer geometries for iOS](/Users/curer/Desktop/QQ20140615-1.png)
+{% imgcap /images/autolayout-1.png 1-1 The default layer geometries for iOS%}
 
 这里表示了anchorPoint含义，用于表示position相对bounds的位置，比如（0.5, 0.5）表示中心，（0,0）表示左上角
-![1-2 The default unit coordinate systems for iOS](/Users/curer/Desktop/QQ20140615-2.png)
+
+{% imgcap /images/autolayout-2.png 1-2 The default unit coordinate systems for iOS%}
 
 
 下面表示了frame bounds position anchorPoint之间的关系，你可能觉得这个anchorPoint似乎没有什么用
 
-![1-3 How the anchor point affects the layer’s position property](/Users/curer/Desktop/QQ20140615-3.png)
-![1-4 How the anchor point affects the layer’s position property](/Users/curer/Desktop/QQ20140615-7.png)
+{% imgcap /images/autolayout-3.png 1-3, 1-4  How the anchor point affects the layer’s position property%}
+{% imgcap /images/autolayout-7.png%}
 
 但是当我们旋转一个View的时候，好处就来了
 
-![1-5 How the anchor point affects the layer’s position property](/Users/curer/Desktop/QQ20140615-4.png)
-![1-6 How the anchor point affects the layer’s position property](/Users/curer/Desktop/QQ20140615-5.png)
+{% imgcap /images/autolayout-4.png 1-5 , 1-6 How the anchor point affects the layer’s position property%}
+{% imgcap /images/autolayout-5.png%}
 
 
 #传统布局的问题
 
-传统布局是非常高效的，组合各种变化，可以轻易得实现任意的2D动画，当然也可以轻易的解决静态的布局问题。但是在面对多个屏幕，屏幕旋转时，甚至是单个屏幕，但是需要在2个View 中间动态增加一个View的时候显得非常繁琐。网上有很多例子，比如[beginning-auto-layout-part-1-of-2](http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2)，或是大家在平时工作中遇到的3.5inch和4inch屏幕之间的适配。
+传统布局是非常高效的，组合各种变化，可以轻易得实现任意的2D动画，当然也可以轻易的解决静态的布局问题。但是在面对多个屏幕，屏幕旋转时，或是需要在2个View 中间动态增加一个View的时候显得非常繁琐。网上有很多例子，比如[beginning-auto-layout-part-1-of-2](http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2)，或是大家在平时工作中遇到的3.5inch和4inch屏幕之间的适配。
 
 #AutoLayout
 
@@ -59,20 +60,57 @@ AutoLayout 是一个描述各种约束的行为，比如，一个View 距离父V
 
 每一个View 都有一个特别的属性叫做Intrinsic Content Size，这个可以理解成是一个View的最合适而且最小的宽度和高度。对于UILabe来说，就是至少得把我设定的文字都显示完整吧，所以系统只需要知道UILabel的位置。而UIView的Intrinsic Content是（0，0）所以需要设置UIView的宽高（或是设定周围的边距等等其他关系可以让系统知道这个View应该多宽，多高）。而Intrinsic Content Size，也是未来自定义View显示到Xcode中必须设置的属性之一。
 
-##The Layout Process
+##Phases of Display
 
-###update constraints
+使用AutoLayout之后，把view显示到屏幕上面大体分成3步。
 
-###layout views
+* Update constraints
+* Layout views
+* Display
 
+一般来说`layoutSubviews`负责布局，比如调整View之间的距离，大小，`drawRect`负责绘制，比如使用什么颜色。而AutoLayout则是在layout之前增加了一个设定约束的过程,也就是上面提到了`update constraints`。
 
+{% imgcap /images/autolayout-8.png 1-7%}
 
-##Compression Resistance and Content Hugging
+在view的`layoutSubView`中，如果我们调用了`[super layoutSubView]` 系统就把设定的这些约束计算成每个view的bounds，center属性。当然我们也可以基于AutoLayout的结果上面再做布局的调整。
+
+{% imgcap /images/autolayout-9.png 1-8%}
+
+**Display 不是这篇文章的重点，这里略过**
 
 ##Alignment Rect
 
+仔细阅读文档的同学会发现在Apple AutoLayout document中可以看到Alignment Rect 这个家伙。
+AutoLayout中的Left，Right等约束，并不是针对View的frame。而是根据Alignment Rect。在绝大多数情况下Alignment = Frame。但是如果对某些需要交互的元素，而图片素材很小的时候，就可以利用Alignment把交互趋于变大。可以参考`UIImage 中的 imageWithAlignmentRectInsets`。
 
+**插入图片
 
+##animation
+
+AutoLayout也可以配合传统的animation方法，整体代码结构如下。
+
+{% codeblock lang:objc %}
+  [self.view layoutIfNeeded];
+  [UIView animateWithDuration:0.3f
+                   animations:^{
+                   
+                     //update constraints  
+                     [self.view layoutIfNeeded];
+                   }];
+
+{% endcodeblock %}
+
+使用AutoLayout也可以轻易的实现之前的设置frame很难实现的动画效果。
+
+** gif 或是视频
+
+使用之前传统的动画，实现这个过程，需要计算所有subView之间的距离，位置。而且在设置一个view的frame时，很难做到同步移动。除非是custom layoutsubview。做起来相当麻烦。但是用AutoLayout则非常简洁直观，只需要设置第一个View的position，然后其他view约定好高度和间隔一次排列就好了。
+
+[demo code](https://github.com/studentdeng/AutoLayoutAnimation)
+
+当然Autolayout做动画的时候有的地方也很麻烦，比如在做旋转的时候，或是使用transform时，很容易产生奇怪的结果。一般来说会设置一个host View来设置位置。
+
+##Compression Resistance and Content Hugging
 
 #参考
 
