@@ -3,7 +3,7 @@ layout: post
 title: "ARC 1"
 date: 2013-03-03 13:43
 comments: true
-categories: [Objective-C]
+categories: [Objective-C, iOS]
 ---
 内容主要来自http://www.galloway.me.uk/2012/01/a-look-under-arcs-hood-episode-1/ 里面加入了一点点自己的吐槽和理解
 

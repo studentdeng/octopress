@@ -3,7 +3,7 @@ layout: post
 title: "Objective-C block"
 date: 2012-02-03 23:47
 comments: true
-categories: [Objective-C]
+categories: [Objective-C, iOS]
 ---
 
 block 有什么意义，特点等等，这些东西，实在是太复杂了，这里只是简单的总结一下block的内存管理。而且也仅仅限于objective-C的部分

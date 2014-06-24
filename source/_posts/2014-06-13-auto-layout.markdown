@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "AutoLayout"
+title: "AutoLayout 相关概念介绍和动画demo"
 date: 2014-06-13 18:28
 comments: true
 categories: [iOS]
@@ -14,9 +14,7 @@ categories: [iOS]
 *  可能的iPhone6屏幕的变化，iPhone和iPad Mac开发越来越趋于统一
 *  Xcode6中Interface Builder的变化（IB中显示自定义View）
 
-cocoa touch 开发中适配各种屏幕尺寸已经是能够预测的了，那么跟进Auto layout 也就是必备技能了。
-
-在一开始使用AutoLayout的时候，和之前的使用Frame描述位置还是有很大的不同，而且一开始的时候很容易遇到一些奇怪的异常。但是在了解AutoLayout之后，就会发现这是一个非常非常elegant的布局解决方案。
+cocoa touch 开发中适配各种屏幕尺寸已经是能够预测的了，那么跟进AutoLayout 也就是必备技能了。
 
 #传统的布局是如何做的
 
@@ -44,11 +42,11 @@ cocoa touch 开发中适配各种屏幕尺寸已经是能够预测的了，那�
 
 #传统布局的问题
 
-传统布局是非常高效的，组合各种变化，可以轻易得实现任意的2D动画，当然也可以轻易的解决静态的布局问题。但是在面对多个屏幕，屏幕旋转时，或是需要在2个View 中间动态增加一个View的时候显得非常繁琐。网上有很多例子，比如[beginning-auto-layout-part-1-of-2](http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2)，或是大家在平时工作中遇到的3.5inch和4inch屏幕之间的适配。
+传统布局是非常高效的，组合各种变化，可以轻易得实现任意的2D动画，当然也可以轻易的解决静态的布局问题。但是在面对多个屏幕，屏幕旋转时，或是需要在2个View 中间动态增加一个View的时候显得非常繁琐。需要不断的写一些计算距离，位置的代码（甚至还有一些magic number）。网上有很多例子，比如[beginning-auto-layout-part-1-of-2](http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2)，或是大家在平时工作中遇到的3.5inch和4inch屏幕之间的适配。
 
 #AutoLayout
 
-AutoLayout使用非常简单Xcode的支持也非常直观，但是对新手却非常难用（实际上很好用）。新手一开始很容易遇到一大堆的异常，crash在main函数里面，让人非常沮丧。但是在了解AutoLayout的一些原理之后变很容易理解了。
+AutoLayout使用非常简单，Xcode的支持也非常直观。但是因为和之前的方式有很大的不同，新手一开始很容易遇到一大堆的异常，crash在main函数里面，让人非常沮丧。但是在了解AutoLayout之后，就会发现这是一个非常非常elegant的布局解决方案，也很容易理解为什么crash，以及应该如何debug。
 
 ##constraints 约束
 
@@ -72,7 +70,7 @@ AutoLayout 是一个描述各种约束的行为，比如，一个View 距离父V
 
 {% imgcap /images/autolayout-8.png 1-7%}
 
-在view的`layoutSubView`中，如果我们调用了`[super layoutSubView]` 系统就把设定的这些约束计算成每个view的bounds，center属性。当然我们也可以基于AutoLayout的结果上面再做布局的调整。
+在view的`layoutSubView`中，如果我们调用了`[super layoutSubView]` 系统就把设定的这些约束计算成每个view的bounds，center属性。当然我们也可以基于AutoLayout的结果,再做布局的调整。
 
 {% imgcap /images/autolayout-9.png 1-8%}
 
@@ -81,11 +79,11 @@ AutoLayout 是一个描述各种约束的行为，比如，一个View 距离父V
 ##Alignment Rect
 
 仔细阅读文档的同学会发现在Apple AutoLayout document中可以看到Alignment Rect 这个家伙。
-AutoLayout中的Left，Right等约束，并不是针对View的frame。而是根据Alignment Rect。在绝大多数情况下Alignment = Frame。但是如果对某些需要交互的元素，而图片素材很小的时候，就可以利用Alignment把交互趋于变大。可以参考`UIImage 中的 imageWithAlignmentRectInsets`。
+AutoLayout中的Left，Right等约束，并不是针对View的frame。而是根据Alignment Rect。在绝大多数情况下Alignment = Frame。但是如果对某些需要交互的元素，而图片素材很小的时候，就可以利用Alignment把交互区域变大。可以参考UIImage 中的 `imageWithAlignmentRectInsets`。
 
-**插入图片
+{% imgcap /images/autolayout-10.png 1-9%}
 
-##animation
+##Animation
 
 AutoLayout也可以配合传统的animation方法，整体代码结构如下。
 
@@ -94,28 +92,40 @@ AutoLayout也可以配合传统的animation方法，整体代码结构如下。
   [UIView animateWithDuration:0.3f
                    animations:^{
                    
-                     //update constraints  
+                     //... update constraints  
+                     
                      [self.view layoutIfNeeded];
                    }];
 
 {% endcodeblock %}
 
-使用AutoLayout也可以轻易的实现之前的设置frame很难实现的动画效果。
+使用AutoLayout也可以轻易的实现之前的设置frame很难实现的动画效果。比如下面的例子(很奇怪，优酷吃掉了后面几秒的动画...)
 
-** gif 或是视频
+<embed src="http://player.youku.com/player.php/sid/XNzI3NTQxOTI0/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
 
-使用之前传统的动画，实现这个过程，需要计算所有subView之间的距离，位置。而且在设置一个view的frame时，很难做到同步移动。除非是custom layoutsubview。做起来相当麻烦。但是用AutoLayout则非常简洁直观，只需要设置第一个View的position，然后其他view约定好高度和间隔一次排列就好了。
+使用之前传统的动画，实现这个过程，需要计算所有subView之间的距离，位置。而且在修改一个view的frame时，很难做到和其他View的移动速度同步。除非是custom `layoutsubview`。做起来相当麻烦。但是用AutoLayout则非常简洁直观，只需要设置第一个View的position，然后其他view约定好高度和间隔依次排列就好了。
 
 [demo code](https://github.com/studentdeng/AutoLayoutAnimation)
 
-当然Autolayout做动画的时候有的地方也很麻烦，比如在做旋转的时候，或是使用transform时，很容易产生奇怪的结果。一般来说会设置一个host View来设置位置。
+当然AutoLayout做动画的时候有的地方也很麻烦，比如希望旋转view A 的时候，或是使用transform时，很容易产生奇怪的结果。一般来说会设置一个host View通过AutoLayout设定位置，然后在旋转view A。一句话就是混合起来，各取优点。
 
-##Compression Resistance and Content Hugging
+##其他
+
+* Compression Resistance  	
+* Content Hugging
+* 优先级
+
+简单的来说Compression Resistance 设置view有多大意愿（优先级），愿意压缩里面的内容。Content Hugging设置view 有多大愿意（优先级），愿意显示里面内容之外的部分。
+
+stackoverflow上面有一个很清晰的通过UIButton解释的[[例子]](http://stackoverflow.com/questions/15850417/cocoa-autolayout-content-hugging-vs-content-compression-resistance-priority)，可以很容易理解这2个属性。
 
 #参考
 
-* Core Animation Programming Guide:Core Animation Basics
+* [Core Animation Programming Guide:Core Animation Basics](https://developer.apple.com/library/ios/documentation/cocoa/conceptual/coreanimation_guide/CoreAnimationBasics/CoreAnimationBasics.html#//apple_ref/doc/uid/TP40004514-CH2-SW3)
 * [Advanced Auto Layout Toolbox-objc.io](http://www.objc.io/issue-3/advanced-auto-layout-toolbox.html)
+* [WWDC2012 session 202 – Introduction to Auto Layout for iOS and OS X](https://developer.apple.com/videos/wwdc/2012/?id=202)
+* [WWDC2012 session 228 – Best Practices for Mastering Auto Layout](https://developer.apple.com/videos/wwdc/2012/?id=228)
+* [WWDC2012 session 232 – Auto Layout by Example](https://developer.apple.com/videos/wwdc/2012/?id=232)
 
 
 
