@@ -37,7 +37,7 @@ Objective-C 相对其他更了解的C++语言来说，还是有些不同的。�
 
 * 相关的内容在[Objective C SEL](http://studentdeng.github.io/blog/2011/10/16/objcsel/)
 
-#Memory Management* 
+#Memory Management
 语言是离不开平台的，而内存管理，则是了解平台中最基础的部分。而cocoa touch 的内存设计也就是基于引用计数的设计，是针对很早以前的设备设计，显然不适合现在的硬件设备。但是，现在我们似乎没有其他的选择，在一开始学习时。
 
 基于引用计数的内存管理，设计的本质其实就是一个[DAG](http://en.wikipedia.org/wiki/Directed_Acyclic_Graph)（有向无回图）
