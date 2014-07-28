@@ -31,9 +31,9 @@ categories: [iOS]
 
 	//这里用一个Timer print presentLayer的位置。
 	CALayer *layer = self.animationLabel.layer.presentationLayer;
-  
+
 	NSLog(@"model:%@, presentLayer%@", NSStringFromCGPoint(self.animationLabel.layer.position), NSStringFromCGPoint(layer.position));
-	
+
 {% endcodeblock %}
 
 下面是屏幕输出结果
@@ -47,7 +47,7 @@ categories: [iOS]
 	...
 	model:{200, 400}, presentLayer{199.99576, 399.99182}
 	model:{200, 400}, presentLayer{200, 400}
-	
+
 
 {%notebox%}
 render tree 在apple的render server进程中，是真正处理动画的地方。而且线程的优先级也比我们主线程优先级高。所以有时候即使我们的App主线程busy，依然不会影响到手机屏幕的绘制工作。
@@ -95,11 +95,11 @@ UIKit的动画最后都会通过Core Animation 来实现, 那么当我们修改l
                    animations:^{
                      animationView.center = CGPointMake(0, 500);
                    } completion:^(BOOL finished) {
-                     
+
                    }];
-                   
+
 {% endcodeblock %}
-                   
+
 ###下面是当我们创建一个UIKit的动画时发生的事情
 
 {% imgcap /images/core_animation9.png %}
@@ -132,9 +132,9 @@ Animation的部分如果没有明白，可以结合后面的回头再看
                    animations:^{
                      animationView.center = CGPointMake(0, 0);
                    } completion:^(BOOL finished) {
-                     
+
                    }];
-                   
+
 {% endcodeblock%}
 
 {% imgcap /images/core_animation5.png %}
@@ -202,7 +202,3 @@ Core Animation 有一个additive的属性实际上已经存在很久了，但是
 * [《WWDC2014 236_building_interruptible_and_responsive_interactions》](https://developer.apple.com/videos/wwdc/2014/?id=236)
 * [《Core Animation Programming Guide:Core Animation Basics》](https://developer.apple.com/library/ios/documentation/cocoa/conceptual/coreanimation_guide/CoreAnimationBasics/CoreAnimationBasics.html#//apple_ref/doc/uid/TP40004514-CH2-SW3)
 * [《additive-core-animation》](http://kxdx.org/additive-core-animation/)
-
-
-
-
