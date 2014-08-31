@@ -119,7 +119,7 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 我们把数据库中的数据，显示到屏幕上，或是传递给View时，这个过程其实是对data 做了一次copy。而且只要不是通过引用或是指针这些方式，通过值传递的方式都是对data做了一次copy。而这个copy的过程，非常类似**Cache**。
 
-![image](/Users/yuguang/Desktop/ios-architecture.png)
+{% imgcap /images/ios-architecture0.png%}
 
 通常建立一个Cache会遇到2种问题。
 
@@ -136,17 +136,17 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 之间的关系可以用下面来描述
 
-![image](/Users/yuguang/Desktop/screenshot.png)
+{% imgcap /images/ios-architecture1.png%}
 
 这里我们隐隐能够感觉到问题，A的数据变化依赖于2个地方。不急，再往后看
 
 ##解决方法C
 
-![image](/Users/yuguang/Desktop/screenshot2.png)
+{% imgcap /images/ios-architecture2.png%}
 
 ##解决方法D
 
-![image](/Users/yuguang/Desktop/screenshot3.png)
+{% imgcap /images/ios-architecture3.png%}
 
 事情变得更糟了
 
@@ -159,7 +159,7 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 现在还是一个简单的Model，如果project变得很大，那么就会变成这个样子
 
-![image](/Users/yuguang/Desktop/screenshot4.png)
+{% imgcap /images/ios-architecture4.png%}
 
 每一个`X`都可能是一个Bug。
 
@@ -171,7 +171,7 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 DAO的数据库似乎很难做这件事情，我们引入了一个新的元素`dataSource`（当然他本身又是DAO的一个Cache)。其中A、B、C3个都会显示数据，那么他们应该在一个层级，其中B、C会修改数据，他们会把这个数据返回给`dataSource`，而通过`dataSource`来把这个变化通知到A、B、C。
 
-![image](/Users/yuguang/Desktop/screenshot5.png)
+{% imgcap /images/ios-architecture5.png%}
 
 这样带来的好处很明显，我们再添加一个D，也不会对其他地方的数据产生任何影响，我们的Unit Test、Mock也更加好写。
 
