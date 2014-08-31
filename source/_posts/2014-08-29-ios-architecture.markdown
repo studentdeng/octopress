@@ -11,23 +11,23 @@ categories: [iOS, design_patterns]
 software architecture 听上去是一个很大的概念，实际上也包括很多东西，里面的争议也很多。在我看来对软件架构最好放在小的场景中理解。
 
 ##问题1
-我们有2个页面。 代码 tag 1.0.0
+我们有2个页面。
+
+{% imgcap /images/architecture0.gif%}
 
 * 页面A：主页面
-* 页面B：详情页面B。
+* 页面B：详情页面
 
-{% imgcap /images/ios-architecture.png 1-1 页面A%}
-
-{% imgcap /images/ios-architecture2.png 1-2 页面B%}
+[demo code 1.0.0](https://github.com/studentdeng/CUArchitectureDemo/tree/1.0.0)
 
 2个页面分别显示一个数字，这个数字应该相同。详情会修改这个数字，这里我们发现，详情页面和主页面数字不一样。
 
+{% imgcap /images/architecture1.gif 数据不一致%}
+
 ##问题1 解决方法A
 
-这里首先的感觉就是，详情页面返回，主页面数据没有即使刷新，导致数据不一致。
+这里首先的感觉就是，详情页面返回，主页面数据没有刷新，导致数据不一致。
 那么Fix这个Bug的方法，就是在主页面出现的时候刷新界面
-
-代码 tag 1.0.1
 
 	- (void)viewWillAppear:(BOOL)animated {
 		[super viewWillAppear:animated];
@@ -37,11 +37,11 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 现在来看，还不错。但是，我们调用selectData的次数则变得非常非常多。数据不是经常变化的。
 
+[demo code 1.0.1](https://github.com/studentdeng/CUArchitectureDemo/tree/1.0.1)
+
 ##问题1 解决方法B
 
 我们发现既然数据的改变是在页面B进行的，那么页面B修改这个数据的时候，应该把数据变化"通知"给页面A，那么我们写了一个Delegate
-
-代码 tag 1.0.2
 
 	@protocol CUDetailViewControllerDelegate <NSObject>
 
@@ -64,6 +64,7 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 到此场景1得到了不错的解决。
 
+[demo code 1.0.2](https://github.com/studentdeng/CUArchitectureDemo/tree/1.0.2)
 
 ##问题2
 这时我们增加了另一个页面C。这个场景会稍微抽象一点，我们定义了3个数据
@@ -81,13 +82,19 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 这时我们的大脑嗅出了一些不好的味道，如果再来个什么dataD，dataE，我们要写这么多的Delegate么？对于多对一"通知"这种味道，很自然的想到了不用Delegate，而是用`NSNotification`来做。让我们未雨绸缪一下，定义一个Notificaiton
 
 	NSString *const kCUDataChangedNotification = @"CUDataChangedNotification";
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kCUDataChangedNotification
+                                                      object:nil
+                                                    userInfo:nil];
 
 那这个变化broadcast到listener，看上去是一个很赞的idea。
 
-代码 tag 1.0.3
+[demo code 1.0.3](https://github.com/studentdeng/CUArchitectureDemo/tree/1.0.3)
 
 ##问题3
 过了一段时间，我们发现问题2的方法有一个Bug，当界面停在页面B的时候，切换到页面C，修改数据，B中再返回时，数据和页面A的数据不一致。
+
+{% imgcap /images/architecture2.gif 数据不一致%}
 
 那也可以类比解决方法B，得到了下面的方法
 
@@ -95,7 +102,23 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 既然A和B的数据不一致，而A的数据比B的新，那么保留一个B的指针，然后A变化的时候，更新B就好了。
 
-代码 tag 1.0.4
+	- (void)handleDataChangedNotification {
+		[self updateLabel];
+		[self.vc updateLabel];
+	}
+
+	// In a storyboard-based application, you will often want to do a little preparation before navigation
+	- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+	{
+    	if ([segue.identifier isEqualToString:@"push"]) {
+        	CUDetailViewController *vc = [segue destinationViewController];
+        	if ([vc isKindOfClass:[CUDetailViewController class]]) {
+            	self.vc = vc;
+        	}
+    	}
+	}
+
+[demo code 1.0.4](https://github.com/studentdeng/CUArchitectureDemo/tree/1.0.4)
 
 ##问题4
 
@@ -105,7 +128,18 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 在看了看整个APP各种通知之后，觉得挺麻烦，准备用一个取巧的方法。可以类比解决方法A。在页面C出现的时候，刷新数据，至于什么性能问题，不管了，先fix bug。
 
-代码 tag 1.0.5
+	- (void)viewWillAppear:(BOOL)animated {
+		[self updateLabel];
+	}
+
+	- (void)updateLabel {
+		int dataB = [[CUDataDAO selectData].data intValue];
+		int dataC = [[CUDataDAO selectOtherData].data intValue];
+  
+		self.dataLabel.text = [@(dataB + dataC) stringValue];
+	}
+
+[demo code 1.0.5](https://github.com/studentdeng/CUArchitectureDemo/tree/1.0.5)
 
 ##问题5
 
