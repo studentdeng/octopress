@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "如何设计iOS APP 架构"
+title: "iOS APP 架构漫谈"
 date: 2014-08-29 15:48
 comments: true
 categories: [iOS, design_patterns]
@@ -8,7 +8,7 @@ categories: [iOS, design_patterns]
 
 最近看了一些有关server的东西，一些很简单的东西，不外乎是一些文档规范，另外结合最近看的wwdc的一些video，觉得对软件架构（software architecture）认识又清楚了一些，这里记录下来。
 
-software architecture 听上去是一个很大的概念，实际上也包括很多东西，里面的争议也很多。在我看来对软件架构最好放在小的场景中理解。
+software architecture 听上去是一个很大的概念，实际上也包括很多东西，里面的争议也很多。在我看来软件架构最好放在小的场景中理解。
 
 ##问题1
 我们有2个页面。
@@ -122,7 +122,7 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 ##问题4
 
-页面C的页面实在是太简单了，这次我们希望在页面C中显示页面A的数据。因为上次我们就产生了一个数据不一致的问题，这次我们注意到了，那么怎么修改呢？
+页面C实在是太简单了，这次我们希望在页面C中显示页面A的数据。因为上次我们就产生了一个数据不一致的问题，这次我们注意到了，那么怎么修改呢？
 
 ##解决方法E
 
@@ -168,7 +168,7 @@ software architecture 听上去是一个很大的概念，实际上也包括很�
 
 ##解决方法B
 
-之间的关系可以用下面来描述
+页面之间的关系可以用下面来描述
 
 {% imgcap /images/ios-architecture1.png%}
 
@@ -236,6 +236,8 @@ A页面要创建动画，动画背后包括很多数据，这些数据会在B，
 * 在哪个层才能调用另一个服务，而调用这个服务还必须要通过统一的接口
 
 software architecture 涵盖的东西非常多。这篇只是一个引子，介绍了设计之前的准备工作。但是在实际过程中，我们的模型可能要比我这里写的还要复杂很多。下一篇会介绍一种策略用来处理更加复杂模型的情况。
+
+最后附上一个完整功能的 [demo code](https://github.com/studentdeng/CUArchitectureDemo/tree/1.0.6)
 
 
 #参考
