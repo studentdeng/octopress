@@ -3,7 +3,7 @@ layout: post
 title: "跳跃表 skip list"
 date: 2013-08-08 09:51
 comments: true
-categories: [algorithms]
+categories: [algorithms,redis]
 ---
 
 最近在学习[redis](http://redis.cn)，这时才知道了[skip list](http://en.wikipedia.org/wiki/Skip_list)，结合[Mit 算法导论 lecture 12](http://v.163.com/movie/2010/12/7/S/M6UTT5U0I_M6V2TTJ7S.html)，在奋斗了2个早上的时间后有了下面的东东。
