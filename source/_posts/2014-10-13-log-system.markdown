@@ -105,7 +105,7 @@ Redis 是一个基于内存的database，不同于memcached，他支持持久化
 
 1. 为了避免加锁，redis 依然创建了一个child process，利用VM的copy-on-write，共享数据。同时保证主线程依然可以处理client请求。
 2. 根据KV的类型，先从内存读取数据，然后再写数据到磁盘，和之前的AOF文件无关。
-3. 那么当子进程rewrite AOF的过程中，main thread既然可以处理新的client request。新增的数据会被放在rewrite buffer中，而且写到原有的AOF文件中。
+3. 那么当子进程rewrite AOF的过程中，main thread依然可以处理新的client request。新增的数据会被放在rewrite buffer中，而且写到原有的AOF文件中。
 4. child process完成后会通知主线程。主线程有一个定时任务，也就是会不断轮询child process是否已经完成（通过信号量）。
 5. 主线程会merge 变化的数据到temp file。
 6. 主线程原子的rename到一个新的AOF文件，之前的AOF就不起作用了。
