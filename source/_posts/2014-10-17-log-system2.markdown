@@ -1,0 +1,32 @@
+---
+layout: post
+title: "分布式系统原理--日志技术No Redo Log"
+date: 2014-10-17 14:02
+comments: true
+categories: [distribution]
+---
+上一篇介绍了[Redo Log](http://studentdeng.github.io/blog/2014/10/13/log-system/)，这篇介绍No Redo Log。
+
+在分布式系统中，某些情况下我们依然需要实现原子操作，有很多方式，其中No Redo(Undo) Log 便是在工程中运用最广泛的思想之一。他的过程非常简单。
+
+下面是一个简单系统的状态。
+
+![image](http://112.124.107.63/my_home/application/uploads/2014_10_17_14_23_51)
+
+为了实现原子的修改 A，B，C的值。我们把A，B，C 看成一个集合，或是一个“目录”。
+
+1.做一次copy
+
+![image](http://112.124.107.63/my_home/application/uploads/2014_10_17_14_22_53)
+
+
+2.对于每个更新的操作，创建一个新的item，然后在新的目录中保存修改后的新值。
+
+![image](http://i.gyazo.com/ab8aa93dc78c7e77d0d9029fc522b792.png)
+
+
+3.原子性的修改生效目录指针。
+
+![image](http://i.gyazo.com/c6bd87760807b3f24cc679ae814a9036.png)
+
+通过原子性的修改一个值，切换一个状态，完成一系列分布式操作原子性的修改。

@@ -3,7 +3,7 @@ layout: post
 title: "分布式系统原理--日志技术Redo Log"
 date: 2014-10-13 19:21
 comments: true
-categories: [redis]
+categories: [redis, distribution]
 ---
 
 ##问题概述
