@@ -16,7 +16,7 @@ categories: [iOS, design_patterns]
 
 正式开始游戏之前，总会有一个邀请的环节。假如我们有2个用户，分别是Host，Guest。Host创建游戏，Guest加入游戏。游戏的整个流程和我们平时玩的对战游戏流程并没有多大不同。
 
-![image](http://112.124.107.63/my_home/application/uploads/2014_11_06_15_44_54.png)
+{% imgcap /images/annual-summary-2014_1.png 1-1%}
 
 1. Host创建游戏，他就相当于进入一个等待队列里面。
 2. Guest加入游戏，他从等待队列中找到一个匹配，比如Host。然后对Host发送`join message`
@@ -30,7 +30,8 @@ categories: [iOS, design_patterns]
 现在的构想的逻辑只有5步，但其实还会包含很多逻辑，比如超时机制，重发机制。由于中间状态很多，还可能有我们没有想到过的问题。在面对这种复杂逻辑时，会通过状态机来帮助我们理顺逻辑。这时，我们脑中思考的业务其实是一个状态到一个状态的图。
 如下
 
-![image](http://112.124.107.63/my_home/application/uploads/2014_11_06_10_30_32.png)
+
+{% imgcap /images/annual-summary-2014_2.png 1-1%}
 
 上半部分是游戏的创建者，下半部分是游戏的加入者。
 
